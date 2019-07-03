@@ -8,7 +8,8 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      movies: []
+      movies: [],
+      searchInput: "",
     }
 
     // hey, go grab all of the stuff from that webpage
@@ -23,14 +24,10 @@ class App extends React.Component {
 
   
 
-  movieSearch(){
-    return (
-    fetch('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=b6fbc7f3f313bd395902af464ef47262')
+  movieSearch(search){
+    fetch('https://api.themoviedb.org/3/search/movie?sort_by=popularity.desc&api_key=b6fbc7f3f313bd395902af464ef47262&query=' + search)
         .then((response) => {return response.json()})
         .then((movies) => {this.setState({movies: movies.results}) })
-    )
-    
-  
   }
 
 
@@ -38,7 +35,9 @@ class App extends React.Component {
     console.log('Render function!', this.state.movies);
     return (
       <div className="App">
-        {this.state.movies.map((movie) => {
+          <input type="text" value={this.state.searchInput} onChange={(e) => this.setState({searchInput: e.target.value })}></input>
+          <button onClick={() => this.movieSearch(this.state.searchInput)}>Search</button> 
+          {this.state.movies.map((movie) => {
           return (
           <div>
             <h1>{movie.title}</h1>
@@ -47,7 +46,6 @@ class App extends React.Component {
           </div>
           )
         })}
-        <button onClick={() => this.movieSearch()}>Search</button> 
       </div>
     );
   
