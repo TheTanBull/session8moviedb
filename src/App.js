@@ -12,14 +12,27 @@ class App extends React.Component {
     }
 
     // hey, go grab all of the stuff from that webpage
-    axios.get("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=b6fbc7f3f313bd395902af464ef47262")
-      .then((response) => {
-        // handle success
-        this.setState({movies: response.data.results}); // this is our movies
-      })
-    console.log('right after that axios get stuff!')
+    // axios.get("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=b6fbc7f3f313bd395902af464ef47262")
+    //   .then((response) => {
+    //     // handle success
+    //     this.setState({movies: response.data.results}); // this is our movies
+    //   })
+    // console.log('right after that axios get stuff!')
     // then put it into this.state.movies
   }
+
+  
+
+  movieSearch(){
+    return (
+    fetch('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=b6fbc7f3f313bd395902af464ef47262')
+        .then((response) => {return response.json()})
+        .then((movies) => {this.setState({movies: movies.results}) })
+    )
+    
+  
+  }
+
 
   render() {
     console.log('Render function!', this.state.movies);
@@ -34,8 +47,10 @@ class App extends React.Component {
           </div>
           )
         })}
+        <button onClick={() => this.movieSearch()}>Search</button> 
       </div>
     );
+  
   }
 }
 
