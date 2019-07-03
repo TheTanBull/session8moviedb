@@ -6,6 +6,7 @@ class Movies extends React.Component {
     constructor(props){
         super(props)
         this.state = {
+            movieDetailsBool: false,
             movies: [],
             searchInput: "",
         }
@@ -18,20 +19,42 @@ class Movies extends React.Component {
       }
 
 
+      onMovieDetails = () => {
+        this.setState({movieDetailsBool: !this.state.movieDetailsBool})
+    }
 
-      render() {
+      returnMovies(){
         return (
             <div>
                 <input type="text" value={this.state.searchInput} onChange={(e) => this.setState({searchInput: e.target.value })}></input>
                 <button onClick={() => this.movieSearch(this.state.searchInput)}>Search</button> 
                 {this.state.movies.map((movie) => {
                 return (
-                    <Movie movie={movie} />
-                
+                    <Movie onClick={this.onMovieDetails} movie={movie} />
                 )
-            })}
-          </div>
+                })}
+            </div>
         )
+      }
+
+      returnMovieDetails(){
+        console.log("In returnMovieDetails")
+        
+        return <MovieDetails onClick={this.onMovieDetails} />
+      }
+
+      
+
+
+      render() {
+        
+        if(!this.state.movieDetailsBool){
+            return this.returnMovies()
+        } else {
+            return this.returnMovieDetails()
+        }
+
+        
       }
 }
 
